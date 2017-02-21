@@ -75,7 +75,7 @@ class Sample(object):
             simpsonOld = simpsonNew
             w = (highBound - lowBound) / s
 
-            for i in range(1, s):
+            for i in range(1, s+1):
 
                 if i == 1 or i == s+1:
                     coefficient = 1
