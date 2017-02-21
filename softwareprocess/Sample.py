@@ -94,7 +94,10 @@ class Sample(object):
             s = s * 2
 
         return simpsonNew
-        print simpsonNew
+
+
+    def main(self):
+        print self.p(self, t=None, tails=1)
 
 
         
