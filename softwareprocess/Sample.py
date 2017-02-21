@@ -96,8 +96,7 @@ class Sample(object):
         return simpsonNew
 
 
-    def main(self):
-        print self.p(self, t=None, tails=1)
+    
 
 
         
