@@ -92,8 +92,8 @@ class Sample(object):
 
 
     def integrate(self, lowBound, highBound, n, f):
-        if n % 2:
-            raise ValueError("Error with n value")
+        # if n % 2:
+        #     raise ValueError("Error with n value")
 
         w = (highBound - lowBound) / n
         q = f(lowBound, n) + f(highBound, n)
