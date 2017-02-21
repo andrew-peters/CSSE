@@ -96,7 +96,7 @@ class Sample(object):
         return simpsonNew
 
 
-    
+
 
 
         
