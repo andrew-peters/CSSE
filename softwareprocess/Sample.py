@@ -64,57 +64,40 @@ class Sample(object):
         result = base ** exponent
         return result
     
-    # def integrate(self, lowBound, highBound, n, f):
-    #     epsilon = 0.0001
-    #     simpsonOld = 0.0
-    #     simpsonNew = epsilon
-    #     s = 4
-    #     coefficient = 0
-    #
-    #     while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
-    #         simpsonOld = simpsonNew
-    #         w = (highBound - lowBound) / s
-    #
-    #         for i in range(1, s+1):
-    #
-    #             if i == 1 or i == s+1:
-    #                 coefficient = 1
-    #                 simpsonNew += coefficient * f(lowBound, n)
-    #
-    #             if i % 2 == 0:
-    #                 coefficient = 4
-    #                 simpsonNew += coefficient * f(lowBound + w * i, n)
-    #
-    #             if i % 2 == 1:
-    #                 coefficient = 2
-    #                 simpsonNew += coefficient * f(lowBound + w * i, n)
-    #
-    #
-    #         simpsonNew = simpsonNew * (w/3.0)
-    #         s = s * 2
-    #
-    #     return simpsonNew
-
-
-
     def integrate(self, lowBound, highBound, n, f):
-        #return 1.0/2
         epsilon = 0.0001
         simpsonOld = 0.0
         simpsonNew = epsilon
         s = 4
+        coefficient = 0
+
         while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
             simpsonOld = simpsonNew
             w = (highBound - lowBound) / s
-            simpsonNew = f(lowBound, n)
-            for i in range(1, s):
-                if (i % 2 == 0):
-                    simpsonNew += 2 * f(lowBound + i * w, n)
-                else:
-                    simpsonNew += 4 * f(lowBound + i * w, n)
-            simpsonNew *= w / 3.0
+
+            for i in range(1, s+1):
+
+                if i == 1 or i == s+1:
+                    coefficient = 1
+                    simpsonNew += coefficient * f(lowBound, n)
+
+                if i % 2 == 0:
+                    coefficient = 4
+                    simpsonNew += coefficient * f(lowBound + w * i, n)
+
+                if i % 2 == 1:
+                    coefficient = 2
+                    simpsonNew += coefficient * f(lowBound + w * i, n)
+
+
+            simpsonNew = simpsonNew * (w/3.0)
             s = s * 2
+
         return simpsonNew
+
+
+
+
 
         
     
