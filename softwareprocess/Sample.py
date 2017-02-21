@@ -64,46 +64,34 @@ class Sample(object):
         result = base ** exponent
         return result
     
-    # def integrate(self, lowBound, highBound, n, f):
-    #     epsilon = 0.001
-    #     simpsonOld = 0.0
-    #     simpsonNew = epsilon
-    #     s = 4
-    #     coefficient = 0
-    #     temp = 0.0
-    #     while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
-    #         simpsonOld = simpsonNew
-    #         w = (highBound - lowBound) / s
-    #         for i in range(0, s):
-    #             if i % 2 == 0:
-    #                 coefficient = 4
-    #             if i % 2 == 1:
-    #                 coefficient = 2
-    #             if i == 0 or i == s:
-    #                 coefficient = 1
-    #
-    #             temp += coefficient * f(lowBound + (w*i), n)
-    #
-    #         simpsonNew = (w/3) * temp
-    #         s = s * 2
-    #
-    #     return simpsonNew
-
-
-
     def integrate(self, lowBound, highBound, n, f):
-        # if n % 2:
-        #     raise ValueError("Error with n value")
+        epsilon = 0.001
+        simpsonOld = 0.0
+        simpsonNew = epsilon
+        s = 4
+        coefficient = 0
+        temp = 0.0
+        while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
+            simpsonOld = simpsonNew
+            w = (highBound - lowBound) / s
+            for i in range(0, s):
+                if i % 2 == 0:
+                    coefficient = 4
+                if i % 2 == 1:
+                    coefficient = 2
+                if i == 0 or i == s:
+                    coefficient = 1
 
-        w = (highBound - lowBound) / n
-        q = f(lowBound) + f(highBound)
+                temp += coefficient * f(lowBound + (w*i), n)
 
-        for i in range(1, n, 2):
-            q += 4 * f(lowBound + (i * w))
-        for i in range(2, n-1, 2):
-            q += 2 * f(lowBound + (i * w))
+            simpsonNew = (w/3) * temp
+            s = s * 2
 
-        return q * w / 3
+        return simpsonNew
+
+
+
+
         
     
         
