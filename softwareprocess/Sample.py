@@ -97,7 +97,24 @@ class Sample(object):
 
 
 
-
+    def integrate(self, lowBound, highBound, n, f):
+        #return 1.0/2
+        epsilon = 0.0001
+        simpsonOld = 0.0
+        simpsonNew = epsilon
+        s = 4
+        while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
+            simpsonOld = simpsonNew
+            w = (highBound - lowBound) / s
+            simpsonNew = f(lowBound, n)
+            for i in range(1, s):
+                if (i % 2 == 0):
+                    simpsonNew += 2 * f(lowBound + i * w, n)
+                else:
+                    simpsonNew += 4 * f(lowBound + i * w, n)
+            simpsonNew *= w / 3.0
+            s = s * 2
+        return simpsonNew
 
         
     
