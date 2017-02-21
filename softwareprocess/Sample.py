@@ -83,11 +83,11 @@ class Sample(object):
 
                 if i % 2 == 0:
                     coefficient = 4
-                    simpsonNew += coefficient * f(lowBound + w * i, n)
-
+                    
                 if i % 2 == 1:
                     coefficient = 2
-                    simpsonNew += coefficient * f(lowBound + w * i, n)
+
+                simpsonNew += coefficient * f(lowBound + w * i, n)
 
 
             simpsonNew = simpsonNew * (w/3.0)
