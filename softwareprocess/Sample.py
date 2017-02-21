@@ -96,7 +96,7 @@ class Sample(object):
         #     raise ValueError("Error with n value")
 
         w = (highBound - lowBound) / n
-        q = f(lowBound, n) + f(highBound, n)
+        q = f(lowBound) + f(highBound)
 
         for i in range(1, n, 2):
             q += 4 * f(lowBound + (i * w))
