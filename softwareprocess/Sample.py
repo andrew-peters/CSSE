@@ -74,6 +74,7 @@ class Sample(object):
         while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
             simpsonOld = simpsonNew
             w = (highBound - lowBound) / s
+            simpsonNew = f(lowBound, n)
             for i in range(1, s+1):
 
                 if i == 1 or i == s+1:
