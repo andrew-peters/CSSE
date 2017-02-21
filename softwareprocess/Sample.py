@@ -64,32 +64,37 @@ class Sample(object):
         result = base ** exponent
         return result
     
-    # def integrate(self, lowBound, highBound, n, f):
-    #     epsilon = 0.001
-    #     simpsonOld = 0.0
-    #     simpsonNew = epsilon
-    #     s = 4
-    #     coefficient = 0
-    #     temp = 0.0
-    #     while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
-    #         simpsonOld = simpsonNew
-    #         w = (highBound - lowBound) / s
-    #         for i in range(0, s):
-    #             if i % 2 == 0:
-    #                 coefficient = 4
-    #             if i % 2 == 1:
-    #                 coefficient = 2
-    #             if i == 0 or i == s:
-    #                 coefficient = 1
-    #
-    #             temp += coefficient * f(lowBound + (w*i), n)
-    #
-    #         simpsonNew = (w/3) * temp
-    #         s = s * 2
-    #
-    #     return simpsonNew
+    def integrate(self, lowBound, highBound, n, f):
+        epsilon = 0.001
+        simpsonOld = 0.0
+        simpsonNew = epsilon
+        s = 4
+        coefficient = 0
 
-    
+        while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
+            simpsonOld = simpsonNew
+            w = (highBound - lowBound) / s
+            for i in range(0, s+1):
+
+                if i == 0 or i == s:
+                    coefficient = 1
+                    simpsonNew += coefficient * f(lowBound, n)
+
+                if i % 2 == 0:
+                    coefficient = 4
+                    simpsonNew += coefficient * f(lowBound + w * i, n)
+
+                if i % 2 == 1:
+                    coefficient = 2
+                    simpsonNew += coefficient * f(lowBound + w * i, n)
+
+
+            simpsonNew = simpsonNew * (w/3.0)
+            s = s * 2
+
+        return simpsonNew
+
+
 
         
     
