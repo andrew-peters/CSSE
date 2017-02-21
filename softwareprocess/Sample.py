@@ -89,7 +89,7 @@ class Sample(object):
     #
     #     return simpsonNew
 
-    def Simpson(f, a, b, n):
+    def integrate(f, a, b, n):
         if a > b:
             print 'Incorrect bounds'
             return None
