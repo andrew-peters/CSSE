@@ -77,9 +77,9 @@ class Sample(object):
             simpsonNew = f(lowBound, n)
             for i in range(1, s):
 
-                # if i == 1 or i == s+1:
-                #     coefficient = 1
-                #     simpsonNew += coefficient * f(lowBound, n)
+                if i == 1 or i == s+1:
+                    coefficient = 1
+                    simpsonNew += coefficient * f(lowBound, n)
 
                 if i % 2 == 0:
                     coefficient = 4
