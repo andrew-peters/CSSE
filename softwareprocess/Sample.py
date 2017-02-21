@@ -68,7 +68,7 @@ class Sample(object):
         epsilon = 0.0001
         simpsonOld = 0.0
         simpsonNew = epsilon
-        s = 4
+        s = 6
         coefficient = 0
 
         while (abs((simpsonNew - simpsonOld) / simpsonNew) > epsilon):
