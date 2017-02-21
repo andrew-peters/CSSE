@@ -99,9 +99,9 @@ class Sample(object):
         q = f(lowBound, n) + f(highBound, n)
 
         for i in range(1, n, 2):
-            q += 4 * f(lowBound + i * w)
+            q += 4 * f(lowBound + (i * w))
         for i in range(2, n-1, 2):
-            q += 2 * f(lowBound + i * w)
+            q += 2 * f(lowBound + (i * w))
 
         return q * w / 3
         
