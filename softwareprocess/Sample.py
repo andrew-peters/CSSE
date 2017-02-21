@@ -76,7 +76,7 @@ class Sample(object):
             w = (highBound - lowBound) / s
             for i in range(1, s+1):
 
-                if i == 0 or i == s:
+                if i == 1 or i == s+1:
                     coefficient = 1
                     simpsonNew += coefficient * f(lowBound, n)
 
