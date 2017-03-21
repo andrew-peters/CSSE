@@ -19,4 +19,4 @@ class DispatchTest(unittest.TestCase):
 
     def test_dispatch_invalid_dict(self):
         output = DT.dispatch(42)
-        self.assertTrue(output == {'error':''})
+        self.assertTrue(output == {'error':'parameter is not a dictionary'})
