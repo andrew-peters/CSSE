@@ -13,4 +13,4 @@ class DispatchTest(TestCase):
     def test_dispatch_empty_input(self):
         inputDict = {}
         output = dispatch(inputDict)
-        self.assertTrue(output == {'error': 'parameter is missing'})
+        self.assertTrue(output == {'error': 'no op is specified'})
