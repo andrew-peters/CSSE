@@ -2,3 +2,15 @@ from unittest import TestCase
 from softwareprocess.dispatch import dispatch
 
 
+class DispatchTest(TestCase):
+    #-------------------------------------------------
+    #--------Acceptance Test
+    # Desired level of confidence: boundary value analysis
+    #-------------------------------------
+
+    #Sad Path
+
+    def test_dispatch_empty_input(self):
+        inputDict = {}
+        output = dispatch(inputDict)
+        self.assertTrue(output == {'error': 'parameter is missing'})
