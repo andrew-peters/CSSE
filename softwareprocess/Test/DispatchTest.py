@@ -1,6 +1,6 @@
 import unittest
 import softwareprocess.dispatch as DT
-import math
+
 
 
 
@@ -26,3 +26,7 @@ class DispatchTest(unittest.TestCase):
                               'op': 'adjust', 'temperature': '71'})
         self.assertTrue(output == {'temperature': '71', 'height': '6', 'pressure': '1010', 'horizon': 'natural',
                                    'error': 'degrees are out of range, should be between 0 and 90', 'observation': '101d15.2', 'op': 'adjust'})
+
+
+    #Happy Path
+
