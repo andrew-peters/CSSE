@@ -1,6 +1,6 @@
-from softwareprocess.dispatch import dispatch
 import unittest
-
+import softwareprocess.dispatch as DT
+import math
 
 
 
@@ -13,6 +13,6 @@ class DispatchTest(unittest.TestCase):
     #Sad Path
 
     def test_dispatch_empty_input(self):
-        inputDict = {}
-        output = dispatch(inputDict)
+        #DT.dispatch({}) 
+        output = DT.dispatch({})
         self.assertEquals(output == {'error': 'no op is specified'})
