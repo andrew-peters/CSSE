@@ -83,7 +83,7 @@ class Sample(object):
 
                 if i % 2 == 0:
                     coefficient = 4
-                    
+
                 if i % 2 == 1:
                     coefficient = 2
 
