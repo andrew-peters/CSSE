@@ -1,5 +1,8 @@
 from unittest import TestCase
 from softwareprocess.dispatch import dispatch
+import unittest
+import softwareprocess.dispatch as DT
+
 
 
 class DispatchTest(TestCase):
