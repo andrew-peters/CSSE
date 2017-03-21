@@ -113,9 +113,11 @@ def convert_to_celcius(x):
 def format_altitude(altitude):
     altMinutes = round((altitude - math.floor(altitude)) * 60, 1)
     altDegrees = math.floor(altitude)
-    return '%dd%.1f' % (altDegrees, altMinutes)
+    outputAlt = '%d'%(altDegrees) + 'd' + '%.1f'%(altMinutes)
+    return outputAlt
 
 
-inputval = {}
-output = dispatch(inputval)
+inputval = {'observation': '30d1.5', 'height': '19.0', 'pressure': '1000', 'horizon': 'artificial', 'op': 'adjust', 'temperature': '85'}
+inputval2 = {'observation': '45d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
+output = dispatch(inputval2)
 print output
