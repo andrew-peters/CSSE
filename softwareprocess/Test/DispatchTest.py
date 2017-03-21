@@ -13,6 +13,10 @@ class DispatchTest(unittest.TestCase):
     #Sad Path
 
     def test_dispatch_empty_input(self):
-        #DT.dispatch({}) 
+        #DT.dispatch({})
         output = DT.dispatch({})
-        self.assertEquals(output == {'error': 'no op is specified'})
+        self.assertTrue(output == {'error': 'no op is specified'})
+
+    def test_dispatch_invalid_dict(self):
+        output = DT.dispatch(42)
+        self.assertTrue(output == {'error':''})
