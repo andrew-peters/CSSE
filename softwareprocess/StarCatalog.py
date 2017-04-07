@@ -62,7 +62,7 @@ starCatalog = {
     'Markab': '13d36.7,15d17.6'
 }
 
-def getStar(star):
+def getStarData(star):
     return starCatalog[star]
 
 # def main():

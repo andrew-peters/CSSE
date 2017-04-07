@@ -1,4 +1,5 @@
 import math
+import datetime
 import StarCatalog as Star
 
 def dispatch(values=None):
@@ -109,9 +110,49 @@ def adjustValues(values):
 
 
 def predict(values):
-    star = Star.getStar(values['body'])
-    values['star'] = star
-    print star
+    #Check for missing or invalid inputs:
+    if 'body' not in values:
+        values['error'] = 'Missing mandatory information (body)'
+        return values
+
+    starName = values['body']
+    if starName not in Star.starCatalog:
+        values['error'] = 'star not in catalog'
+        return values
+
+    starData = Star.getStarData(starName).split(',')
+    sha = starData[0]
+    latitude = starData[1]
+
+    print starData
+
+    #Set default values:
+    dateWithTime = datetime.datetime.strptime('2001-01-01', '%Y-%m-%d')#.isoformat() == '2001-01-01'
+
+    #Get values from input dict:
+    if 'date' in values:
+        inputDate = values['date'].split('-')
+        year = inputDate[0]
+        month = inputDate[1]
+        day = inputDate[2]
+        # print year
+        # print month
+        # print day
+
+        if year < 2001 or len(year) != 4 or len(month) != 2 or int(month) <= 0 or int(month) >= 13 or len(day) != 2:
+            values['error'] = 'Invalid date'
+            return values
+
+        date = inputDate
+        dateWithTime = datetime.datetime.strptime(values['date'], '%Y-%m-%d')
+
+
+
+    #star = Star.getStar(values['body'])
+    #values['star'] = star
+    #print star
+    #print date
+    #print dateWithTime.year
     return values
 
 
@@ -131,8 +172,8 @@ def format_altitude(altitude):
 # inputval3 = {'observation': '101d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
 inputVal4 = {
             'op': 'predict',
-            'body': 'Enif',
-            'date': '2013-07-11'
+            'body': 'Betelgeuse',
+            'date': '2017-03-07'
             }
 output = dispatch(inputVal4)
 print output
