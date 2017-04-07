@@ -1,4 +1,5 @@
 import math
+import StarCatalog as Star
 
 def dispatch(values=None):
 
@@ -15,7 +16,7 @@ def dispatch(values=None):
     if(values['op'] == 'adjust'):
         return adjustValues(values)
     elif(values['op'] == 'predict'):
-        return values    #This calculation is stubbed out
+        return predict(values)
     elif(values['op'] == 'correct'):
         return values    #This calculation is stubbed out
     elif(values['op'] == 'locate'):
@@ -107,6 +108,14 @@ def adjustValues(values):
     return values
 
 
+def predict(values):
+    star = Star.getStar(values['body'])
+    values['star'] = star
+    print star
+    return values
+
+
+
 def convert_to_celcius(x):
     return (x - 32) * 5/9
 
@@ -120,5 +129,10 @@ def format_altitude(altitude):
 # inputval = {'observation': '30d1.5', 'height': '19.0', 'pressure': '1000', 'horizon': 'artificial', 'op': 'adjust', 'temperature': '85'}
 # inputval2 = {'observation': '45d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
 # inputval3 = {'observation': '101d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
-# output = dispatch(inputval)
-# print output
+inputVal4 = {
+            'op': 'predict',
+            'body': 'Enif',
+            'date': '2013-07-11'
+            }
+output = dispatch(inputVal4)
+print output
