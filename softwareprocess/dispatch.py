@@ -254,8 +254,8 @@ def calcLeapYears(refYear, obsYear):
 # inputVal4 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:42'}
 # inputVal5 = {'op': 'predict'}
 # inputVal6 = {'op': 'predict', 'body': 'unknown', 'date': '2016-01-17', 'time': '03:15:42'}
-# inputVal7 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-99-17', 'time': '03:15:42'}
+inputVal7 = {'op': 'predict', 'body': 'Acrux', 'date': '2016-01-17', 'time': '03:15:42'}
 #inputVal8 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:99', 'lat': '65d89', 'long': '75d35'}
 #
-#output = dispatch(inputVal8)
-#print output
+output = dispatch(inputVal7)
+print output
