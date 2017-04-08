@@ -256,6 +256,6 @@ def calcLeapYears(refYear, obsYear):
 # inputVal6 = {'op': 'predict', 'body': 'unknown', 'date': '2016-01-17', 'time': '03:15:42'}
 # inputVal7 = {'op': 'predict', 'body': 'Acrux', 'date': '2016-01-17', 'time': '03:15:42'}
 # inputVal8 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:99', 'lat': '65d89', 'long': '75d35'}
-# 
+#
 # output = dispatch(inputVal6)
 # print output
