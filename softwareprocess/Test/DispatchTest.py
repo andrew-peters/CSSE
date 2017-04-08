@@ -5,7 +5,7 @@ import softwareprocess.dispatch as DT
 
 
 class DispatchTest(unittest.TestCase):
-    #-------------------------------------------------
+    #100 dispatch-------------------------------------------------
     #--------Acceptance Test
     # Desired level of confidence: boundary value analysis
     #------------------------------------------------
@@ -28,5 +28,28 @@ class DispatchTest(unittest.TestCase):
                                    'error': 'degrees are out of range, should be between 0 and 90', 'observation': '101d15.2', 'op': 'adjust'})
 
 
-    #Happy Path
 
+
+    #200 predict   -------------------------------------------------
+    #--------Acceptance Test
+    # Desired level of confidence: boundary value analysis
+    #------------------------------------------------
+
+
+    #Happy Path
+    def test200_ShouldReturnCorrectLatAndLong(self):
+        input = {
+            'op': 'predict',
+            'body': 'Betelgeuse',
+            'date': '2016-01-17',
+            'time': '03:15:42'
+        }
+        output = {
+            'op':'predict',
+            'body': 'Betelgeuse',
+            'date': '2016-01-17',
+            'time': '03:15:42',
+            'long': '75d53.6',
+            'lat': '7d24.3'
+        }
+        self.assertDictEqual(nav.dispatch(input), output)
