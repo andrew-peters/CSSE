@@ -52,7 +52,7 @@ class DispatchTest(unittest.TestCase):
     #Sad Path
     def test200_03_ShouldReturnErrorForMissingInformation(self):
         input = {'op': 'predict'}
-        output = {'op':'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:42', 'long': '75d53.6','lat': '7d24.3'}
+        output = {'error': 'Missing mandatory information (body)', 'op': 'predict'}
         self.assertDictEqual(DT.dispatch(input), output)
 
 
