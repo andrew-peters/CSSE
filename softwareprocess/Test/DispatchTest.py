@@ -57,7 +57,7 @@ class DispatchTest(unittest.TestCase):
 
     def test200_04_ShouldReturnErrorForStarNotInCatalog(self):
         input = {'op': 'predict', 'body': 'Unknown', 'date': '2016-01-17', 'time': '03:15:42'}
-        output = {'error': 'Missing mandatory information (body)', 'op': 'predict'}
+        output = {'body': 'unknown', 'date': '2016-01-17', 'time': '03:15:42', 'error': 'star not in catalog', 'op': 'predict'}
         self.assertDictEqual(DT.dispatch(input), output)
 
 
