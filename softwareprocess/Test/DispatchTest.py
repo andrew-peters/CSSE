@@ -44,7 +44,14 @@ class DispatchTest(unittest.TestCase):
 
 
     def test200_02_ShouldReturnCorrectLatAndLong(self):
-        input = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:42'}
+        input = {'op': 'predict', 'body': 'Acrux', 'date': '2016-01-17', 'time': '03:15:42'}
+        output = {'body': 'Acrux', 'long': '338d1.7', 'lat': '-63d10.9', 'time': '03:15:42', 'date': '2016-01-17', 'op': 'predict'}
+        self.assertDictEqual(DT.dispatch(input), output)
+
+
+    #Sad Path
+    def test200_03_ShouldReturnErrorForMissingInformation(self):
+        input = {'op': 'predict'}
         output = {'op':'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:42', 'long': '75d53.6','lat': '7d24.3'}
         self.assertDictEqual(DT.dispatch(input), output)
 
