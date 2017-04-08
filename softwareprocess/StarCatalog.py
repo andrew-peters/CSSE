@@ -1,4 +1,4 @@
-#Dictionary of stars and their respective SHA and Dec
+#Dictionary of stars and their respective SHA and lat
 
 starCatalog = {
     'Alpheratz': '357d41.7,29d10.9',
@@ -65,7 +65,4 @@ starCatalog = {
 def getStarData(star):
     return starCatalog[star]
 
-# def main():
-#     print getStar('Hadar')
-#
-# main()
+

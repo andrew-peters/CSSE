@@ -109,6 +109,7 @@ def adjustValues(values):
     return values
 
 
+#returns output dict for predict
 def predict(values):
     #Check for missing or invalid inputs:
     if 'body' not in values:
@@ -121,13 +122,11 @@ def predict(values):
         return values
 
     starData = Star.getStarData(starName).split(',')
-    sha = starData[0]
+    sha = splitDegAndMin(starData[0])
     latitude = starData[1]
 
-    print starData
-
     #Set default values:
-    dateWithTime = datetime.datetime.strptime('2001-01-01', '%Y-%m-%d')#.isoformat() == '2001-01-01'
+    date = datetime.datetime.strptime('2001-01-01', '%Y-%m-%d')#.isoformat() == '2001-01-01'
 
     #Get values from input dict:
     if 'date' in values:
@@ -135,45 +134,124 @@ def predict(values):
         year = inputDate[0]
         month = inputDate[1]
         day = inputDate[2]
-        # print year
-        # print month
-        # print day
 
         if year < 2001 or len(year) != 4 or len(month) != 2 or int(month) <= 0 or int(month) >= 13 or len(day) != 2:
             values['error'] = 'Invalid date'
             return values
+        date = datetime.datetime.strptime(values['date'], '%Y-%m-%d')
 
-        date = inputDate
-        dateWithTime = datetime.datetime.strptime(values['date'], '%Y-%m-%d')
+    if 'time' in values:
+        inputTime = values['time'].split(':')
+        hours = inputTime[0]
+        minutes = inputTime[1]
+        seconds = inputTime[2]
 
+        if int(hours) < 0 or int(hours) > 24 or len(hours) != 2:
+            values['error'] = 'invalid time'
+            return values
+        date = date.replace(hour=int(hours))
 
+        if int(minutes) < 0 or int(minutes) > 59 or len(minutes) != 2:
+            values['error'] = 'invalid time'
+            return values
+        date = date.replace(minute=int(minutes))
 
-    #star = Star.getStar(values['body'])
-    #values['star'] = star
-    #print star
-    #print date
-    #print dateWithTime.year
+        if int(seconds) < 0 or int(seconds) > 59 or len(seconds) != 2:
+            values['error'] = 'invalid time'
+            return values
+        date = date.replace(second=int(seconds))
+
+    #Values for the reference year and observation year
+    referenceYear = 2001
+    observationYear = date.year
+
+    #calculates the cumulative progression
+    cumulativeProgression = ((observationYear - referenceYear) * splitDegAndMin('-0d14.31667'))
+
+    #The GHA of Aries on date 2001-01-01
+    initialGhaAries = splitDegAndMin('100d42.6')
+
+    #standard values
+    numLeapYears = calcLeapYears(referenceYear, observationYear)
+    earthRotationalPeriod = 86164.1
+    earthClockPeriod = 86400
+    earthRotationDeg = splitDegAndMin('360d0.00')
+
+    dailyRotation = abs(earthRotationDeg - earthRotationalPeriod / earthClockPeriod * earthRotationDeg)
+    leapYearProgression = dailyRotation * numLeapYears
+
+    #calculates how far the prime meridian has rotated since the beginning of the observation year
+    obsGhaAries = initialGhaAries + cumulativeProgression + leapYearProgression
+
+    #calculates the angle of the earth's rotation since the beginning of the observation year
+    totalSeconds = (date - datetime.datetime.strptime('2016-01-01', '%Y-%m-%d')).total_seconds()
+    rotationAmount = totalSeconds / 86164.1 * splitDegAndMin('360d0.00')
+
+    #total gha of aries
+    ghaAries = obsGhaAries + rotationAmount
+
+    #calculates the star's gha
+    ghaStar = ghaAries + sha
+
+    values['long'] = formatFinalVal(ghaStar)
+    values['lat'] = latitude
+
     return values
-
 
 
 def convert_to_celcius(x):
     return (x - 32) * 5/9
 
+
 def format_altitude(altitude):
-    altMinutes = round((altitude - math.floor(altitude)) * 60, 1)
     altDegrees = math.floor(altitude)
+    altMinutes = round((altitude - altDegrees) * 60, 1)
     outputAlt = '%d'%(altDegrees) + 'd' + '%.1f'%(altMinutes)
     return outputAlt
 
 
-# inputval = {'observation': '30d1.5', 'height': '19.0', 'pressure': '1000', 'horizon': 'artificial', 'op': 'adjust', 'temperature': '85'}
-# inputval2 = {'observation': '45d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
-# inputval3 = {'observation': '101d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
-inputVal4 = {
-            'op': 'predict',
-            'body': 'Betelgeuse',
-            'date': '2017-03-07'
-            }
-output = dispatch(inputVal4)
+def formatNum(x):
+    x_degrees = math.floor(x)
+    if x < 0:
+        x_degrees = math.ceil(x)
+    x_minutes = abs(round((x - x_degrees) * 60, 1))
+    output = '%dd%.1f' % (x_degrees, x_minutes)
+    return output
+
+
+def formatFinalVal(x):
+    x_degrees = math.floor(x)
+    newDegrees = x_degrees % 360
+    x_minutes = abs(round((x - x_degrees) * 60, 1))
+    output = '%dd%.1f' % (newDegrees, x_minutes)
+    return output
+
+
+def splitDegAndMin(x):
+    degreesAndMin = x.split('d')
+    degrees = int(degreesAndMin[0])
+    minutes = float(degreesAndMin[1])
+    total = (abs(degrees) + (minutes / 60))
+    if degreesAndMin[0].__contains__('-'):
+        return -1 * total
+    return total
+
+
+def calcLeapYears(refYear, obsYear):
+    count = 0
+    for x in range(refYear, obsYear):
+        if x % 4 == 0 or ((x % 100 == 0) and (x % 400 == 0)):
+            count = count + 1
+    return count
+
+inputval = {'observation': '30d1.5', 'height': '19.0', 'pressure': '1000', 'horizon': 'artificial', 'op': 'adjust', 'temperature': '85'}
+inputval2 = {'observation': '45d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
+inputval3 = {'observation': '101d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
+inputVal4 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:42'}
+inputVal5 = {'op': 'predict'}
+inputVal6 = {'op': 'predict', 'body': 'unknown', 'date': '2016-01-17', 'time': '03:15:42'}
+inputVal7 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-99-17', 'time': '03:15:42'}
+inputVal8 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:99'}
+
+output = dispatch(inputVal6)
 print output
