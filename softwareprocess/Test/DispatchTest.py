@@ -69,6 +69,6 @@ class DispatchTest(unittest.TestCase):
 
     def test300_01_ShouldRetrunError(self):
         input = {'op': 'correct', 'lat': '5d87'}
-        output = {'error': 'Missing mandatory information', 'op': 'correct'}
+        output = {'op': 'correct', 'error': 'Missing mandatory information'}
         self.assertDictEqual(DT.dispatch(input), output)
 
