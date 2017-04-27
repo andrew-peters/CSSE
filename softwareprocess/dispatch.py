@@ -203,6 +203,16 @@ def predict(values):
     return values
 
 
+#Returns output dict for correct
+def correct(values):
+    #Check for missing/invalid inputs/values
+    if 'lat' not in values or 'long' not in values:
+        values['error'] = 'Missing mandatory information'
+
+
+    return values
+
+
 def convert_to_celcius(x):
     return (x - 32) * 5/9
 
