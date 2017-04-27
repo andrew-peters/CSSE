@@ -62,3 +62,13 @@ class DispatchTest(unittest.TestCase):
 
 
 
+    #300 correct   -------------------------------------------------
+    #--------Acceptance Test
+    # Desired level of confidence: boundary value analysis
+    #------------------------------------------------
+
+    def test300_01_ShouldRetrunError(self):
+        input = {'op': 'correct', 'lat': '5d87'}
+        output = {'error': 'Missing mandatory information', 'op': 'correct'}
+        self.assertDictEqual(DT.dispatch(input), output)
+

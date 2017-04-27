@@ -209,6 +209,10 @@ def correct(values):
     if 'lat' not in values or 'long' not in values:
         values['error'] = 'Missing mandatory information'
 
+    latValues = values['lat'].split('d')
+    latDegrees = latValues[0]
+    latMinutes = latValues[1]
+
 
     return values
 
