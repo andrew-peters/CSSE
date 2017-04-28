@@ -205,15 +205,83 @@ def predict(values):
 
 #Returns output dict for correct
 def correct(values):
-    #Check for missing/invalid inputs/values
+    #Check for missing/invalid inputs and set corresponding values
     if 'lat' not in values or 'long' not in values:
-        values['error'] = 'Missing mandatory information'
+        values['error'] = 'Missing mandatory information (lat or long)'
+        return values
 
-    latValues = values['lat'].split('d')
-    latDegrees = latValues[0]
-    latMinutes = latValues[1]
+    latValuesIn = values['lat']
+    lat = splitDegAndMin(latValuesIn)
 
+    longValuesIn = values['long']
+    longitude = splitDegAndMin(longValuesIn)
 
+    if 'altitude' not in values:
+        values['error'] = 'Missing mandatory information (altitude)'
+        return values
+
+    altIn = values['altitude']
+    altitude = splitDegAndMin(altIn)
+
+    if 'assumedLat' not in values or 'assumedLong' not in values:
+        values['error'] = 'Missing mandatory information (assumedLat or assumedLong)'
+        return values
+
+    assumedLatIn = values['assumedLat']
+    if 'd' not in assumedLatIn:
+        values['error'] = 'assumedLat must be of format xdyy.y'
+    assumedLatDegAndMin = assumedLatIn.split('d')
+    assumedLatDeg = float(assumedLatDegAndMin[0])
+    assumedLatMin = float(assumedLatDegAndMin[1])
+
+    if assumedLatDeg < -90 or assumedLatDeg > 90 or assumedLatMin <= 0 or assumedLatMin > 60:
+        values['error'] = 'Invalid  input for assumedLat'
+        return values
+
+    assumedLat = splitDegAndMin(assumedLatIn)
+
+    assumedLongIn = values['assumedLong']
+    if 'd' not in assumedLongIn:
+        values['error'] = 'assumedLong must be of format xdyy.y'
+    assumedLongDegAndMin = assumedLongIn.split('d')
+    assumedLongDeg = float(assumedLongDegAndMin[0])
+    assumedLongMin = float(assumedLongDegAndMin[1])
+
+    if assumedLongDeg < 0 or assumedLongDeg > 360 or assumedLongMin <= 0 or assumedLongMin > 60:
+        values['error'] = 'Invalid  input for assumedLong'
+        return values
+
+    assumedLong = splitDegAndMin(assumedLongIn)
+
+    if 'correctedDistance' in values or 'correctedAzimuth' in values:
+        values['error'] = 'correctedDistance or correctedAzimuth already in values'
+
+    #Calculate LHA
+    lha = longitude + assumedLong
+    # print formatNum(lha)
+    # print format_altitude(lha)
+    intermediateDist = ((math.sin(math.radians(lat)) * math.sin(math.radians(assumedLat))) + (math.cos(math.radians(lat)) * math.cos(math.radians(assumedLat)) * math.cos(math.radians(lha))))
+
+    correctedAltitude = math.degrees(math.asin(intermediateDist))
+    #print formatNum(correctedAltitude)
+
+    correctedDistance = altitude - correctedAltitude
+    #correctedDistance = math.degrees(correctedDistanceRad)
+    # print formatNum(correctedDistance)
+    # print convertToArcMin(correctedDistance)
+
+    latDeg = convertToCorrectFormat(latValuesIn)
+    assLatDeg = convertToCorrectFormat(assumedLatIn)
+
+    latRad = math.radians(latDeg)
+    assLatRad = math.radians(assLatDeg)
+    correctedAzimuthRad = math.acos(((math.sin(latRad)) - math.sin(assLatRad) * intermediateDist) / (math.cos(assLatRad) * math.cos(math.asin(intermediateDist))))
+    correctedAzimuth = round(math.degrees(correctedAzimuthRad), 3)
+    # print convertToArcMin(correctedDistance)
+    # print formatNum(correctedAzimuth)
+
+    values['correctedDistance'] = convertToArcMin(correctedDistance)
+    values['correctedAzimuth'] = formatNum(correctedAzimuth)
     return values
 
 
@@ -262,6 +330,27 @@ def calcLeapYears(refYear, obsYear):
             count = count + 1
     return count
 
+def convertToArcMin(x):
+    degAndMin = formatNum(x).split('d')
+    deg = int(degAndMin[0])
+    min = float(degAndMin[1])
+    arcMin = (deg * 60 + min)
+    return round(arcMin, 0)
+
+def convertToCorrectFormat(x):
+    degAndMin = x.split('d')
+    deg = float(degAndMin[0])
+    min = float(degAndMin[1])
+    min = min / 60
+    if deg < 0:
+        deg = deg - min
+    else:
+        deg = deg + min
+
+    return deg
+
+
+
 # inputval = {'observation': '30d1.5', 'height': '19.0', 'pressure': '1000', 'horizon': 'artificial', 'op': 'adjust', 'temperature': '85'}
 # inputval2 = {'observation': '45d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
 # inputval3 = {'observation': '101d15.2', 'height': '6', 'pressure': '1010', 'horizon': 'natural', 'op': 'adjust', 'temperature': '71'}
@@ -270,6 +359,6 @@ inputVal5 = {'op': 'predict'}
 # inputVal6 = {'op': 'predict', 'body': 'unknown', 'date': '2016-01-17', 'time': '03:15:42'}
 # inputVal7 = {'op': 'predict', 'body': 'Acrux', 'date': '2016-01-17', 'time': '03:15:42'}
 # inputVal8 = {'op': 'predict', 'body': 'Betelgeuse', 'date': '2016-01-17', 'time': '03:15:99', 'lat': '65d89', 'long': '75d35'}
-#
-output = dispatch(inputVal5)
+inputVal9 = {'op': 'correct', 'lat':'16d32.3', 'long': '95d41.6', 'altitude': '13d42.3', 'assumedLat': '-53d38.4', 'assumedLong': '74d35.3'}
+output = dispatch(inputVal9)
 print output
