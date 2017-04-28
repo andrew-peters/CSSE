@@ -72,7 +72,7 @@ class DispatchTest(unittest.TestCase):
         output = {'op': 'correct','lat': '5d87', 'error': 'Missing mandatory information'}
         self.assertDictEqual(DT.dispatch(input), output)
 
-     def test300_02_ShouldReturnCorrectOutput(self):
+    def test300_02_ShouldReturnCorrectOutput(self):
         input = {'op': 'correct', 'lat':'16d32.3', 'long': '95d41.6', 'altitude': '13d42.3', 'assumedLat': '-53d38.4', 'assumedLong': '74d35.3'}
         output = {'assumedLat': '-53d38.4', 'correctedDistance': 3950.0, 'altitude': '13d42.3', 'assumedLong': '74d35.3', 'long': '95d41.6', 'lat': '16d32.3', 'correctedAzimuth': '164d43.0', 'op': 'correct'}
 
